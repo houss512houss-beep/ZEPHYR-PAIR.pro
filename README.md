@@ -53,13 +53,19 @@ Generate session IDs for WhatsApp bots using [`@whiskeysockets/baileys`](https:/
 ## 👑 Owner
 
 <p align="center">
-  <a href="https://github.com/XdKing2">
-    <img src="https://github.com/XdKing2.png" width="200" height="200" alt="Malvin King"/>
-  </a>
+  <img src="https://i.ibb.co/qM85X4Zq/37a662613404ed485683741d9889200e.jpg" width="200" height="200" alt="ZEPHYR Logo" style="border-radius: 50%; border: 4px solid cyan; box-shadow: 0 0 20px cyan;"/>
 </p>
 
-📬 [`Contact on WhatsApp`](https://wa.me/263780166288)
+<p align="center">
+  <strong>ZEPHYR</strong> 🌬️<br>
+  WhatsApp Bot Pairing Panel
+</p>
 
----
+<p align="center">
+  📬 [Contact on WhatsApp](https://wa.me/212614579780)
+</p>
 
-
+<p align="center">
+  <strong>Powered by ZEPHYR</strong><br>
+  © 2025 - All rights reserved.
+</p>
