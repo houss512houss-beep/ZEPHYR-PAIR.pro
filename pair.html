@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZEPHYR PAIR CODE</title>
+  <link rel="stylesheet" href="css/all.min.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-image: url("https://i.ibb.co/pXL9RYv/temp-image.jpg"); /* يمكنك تغيير الخلفية لاحقاً */
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .box {
+      width: 300px;
+      height: 330px;
+      padding: 20px;
+      text-align: center;
+      background-color: rgba(255,255,255,0.5);
+      border-radius: 10px;
+      box-shadow: none;
+    }
+
+    #text, .centered-text, .input-container input {
+      color: #000;
+    }
+
+    .input-container {
+      display: flex;
+      background: linear-gradient(45deg, #c5c5c5 0%, #ffffff 100%);
+      padding: 0.3rem;
+      gap: 0.3rem;
+      max-width: 300px;
+      width: 100%;
+      border-radius: 1rem;
+    }
+
+    .input-container input {
+      border-radius: 0.8rem 0 0 0.8rem;
+      background: #e8e8e8;
+      width: 89%;
+      padding: 1rem;
+      border: none;
+      border-left: 2px solid #00ffff; /* لون سماوي */
+      color: #000;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .input-container input:focus {
+      border-left: 2px solid #00ffff;
+      outline: none;
+    }
+
+    .input-container button {
+      padding: 1rem;
+      background: linear-gradient(135deg, #00ffff 0%, #0080ff 100%); /* أزرق سماوي */
+      font-weight: 900;
+      letter-spacing: 0.3rem;
+      text-transform: uppercase;
+      color: white;
+      border: none;
+      border-radius: 0 1rem 1rem 0;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .input-container button:hover {
+      background: linear-gradient(135deg, #00ff80 0%, #008040 100%);
+      color: white;
+    }
+
+    @media (max-width: 500px) {
+      .input-container {
+        flex-direction: column;
+      }
+      .input-container input, .input-container button {
+        border-radius: 0.8rem;
+      }
+    }
+
+    .glowing-text {
+      margin-top: 30px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: white;
+      text-shadow: 
+        0 0 5px #00ffff, 
+        0 0 10px #00ffff, 
+        0 0 15px #0080ff, 
+        0 0 20px #0080ff, 
+        0 0 25px #00bfff, 
+        0 0 30px #00bfff;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 
+          0 0 5px #00ffff, 
+          0 0 10px #00ffff, 
+          0 0 15px #0080ff;
+      }
+      to {
+        text-shadow: 
+          0 0 10px #00ffff, 
+          0 0 20px #00ffff, 
+          0 0 30px #0080ff, 
+          0 0 40px #0080ff;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="box" id="box">
+      <div id="text">
+        <i class="fa fa-user"></i>
+        <p>
+          <h2 class="centered-text">ZEPHYR PAIR</h2>           
+          <h6>أدخل رقمك مع كود البلد</h6>
+          <div class="input-container">
+            <input type="number" id="number" placeholder="مثال: 201234567890">
+            <button id="submit">ENTER</button>
+          </div>
+         
+          <a id="waiting-message" class="centered-text" style="display: none;">جاري المعالجة...</a>
+          <br><br>
+          <main id="pair"></main>
+        </p>
+      </div>
+    </div>
+    <div class="glowing-text">Powered By Zephyr</div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+  <script>
+    let a = document.getElementById("pair");
+    let b = document.getElementById("submit");
+    let c = document.getElementById("number");
+
+    async function Copy() {
+      let obj = document.getElementById("copy");
+      let text = obj.innerText;
+      await navigator.clipboard.writeText(obj.innerText.replace('CODE: ', ''));
+      obj.innerText = "تم النسخ!";
+      obj.style.color = "blue";
+      setTimeout(() => {
+        obj.innerText = text;
+        obj.style.color = "black";
+      }, 1000);
+    }
+
+    b.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!c.value) {
+        a.innerHTML = '<a style="color:red;font-weight:bold">⚠️ أدخل رقم الواتساب مع كود البلد</a><br><br>';
+      } else if (c.value.replace(/[^0-9]/g, "").length < 11) {
+        a.innerHTML = '<a style="color:red;font-weight:bold">رقم غير صحيح</a><br><br>';
+      } else {
+        const bc = c.value.replace(/[^0-9]/g, "");
+        c.type = "text";
+        c.value = "+" + bc;
+        c.style = "color:black;font-size:20px;text-align:center";
+        a.innerHTML = '<a style="color:black;font-weight:bold">جاري توليد الكود...</a><br><br>';
+        let { data } = await axios(`/code?number=${bc}`);
+        let code = data.code || "الخدمة غير متوفرة حالياً";
+        a.innerHTML = '<font id="copy" onclick="Copy()" style="color:red;font-weight:bold;cursor:pointer" size="5">CODE: <span style="color:black">' + code + '</span></font><br><br>';
+      }
+    });
+  </script>
+</body>
+</html>
